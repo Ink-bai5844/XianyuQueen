@@ -51,8 +51,64 @@ pip install -r requirements.txt
 3. 申请DeepSeek API密钥并配置(deepseekApi.py)
 ```json
 {
-    "browser_path": "C:/Program Files/Google/Chrome/Application/chrome.exe",
-    "wordscut": "包邮,国行,港版,二手,正版,中文,现货",
     "api_key": "your_deepseek_api_key"
 }
 ```
+
+4. 配置gfc.json(其他配置请见https://github.com/MiankeStar/Goofisher)
+```json
+{
+	"wordscut": "现货包邮正品RTX显卡未拆全新", //偏好向量字符串
+}
+```
+
+## 🎮 使用方法
+完整流程运行
+```bash
+python run.py
+```
+
+或分步执行
+```bash
+# 1. 数据采集
+python Goofisher/src/process/gfcp.py
+
+# 2. 价格筛选
+python priceselect.py
+
+# 3. 名称匹配
+python nameselect.py
+
+# 4. 文本分析
+python wordscut.py
+
+# 5. 深度分析
+python deepseekApi.py
+```
+
+## 📊 示例输出
+推荐结果示例(result.csv)
+```bash
+编号,推荐指数,价格,介绍
+43,9.0,10000.0,全新9999G显卡  
+104,9.0,11000.0,显卡现货全新未拆
+25,9.0,9999.0,全新未拆封显卡，32GB显存
+```
+
+深度分析实时日志(api_debug.log)
+```bash
+[2025-04-16 18:56:10] 开始处理编号 25
+[2025-04-16 18:56:18] API响应原始数据：{"..."}
+[2025-04-16 18:56:18] 编号25分析结果：{"..."}
+```
+
+## ⚠️ 注意事项
+1. 首次使用需配置Chrome浏览器路径
+2. 深度分析API出现网络错误时自动重试3次
+
+## 🙏 致谢
+
+本项目的开发基于以下开源项目：
+
+- **[Goofisher](https://github.com/MiankeStar/Goofisher)**  
+  由 MiankeStar 维护的闲鱼数据采集框架，为系统提供核心数据抓取能力
