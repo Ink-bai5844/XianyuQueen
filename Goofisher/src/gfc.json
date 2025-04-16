@@ -1,0 +1,13 @@
+{
+	"browser_path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+	"pages": 40,
+	"keyword": "5090",
+	"wordscut": "现货，包邮，正品，RTX，显卡，未拆，全新",
+	"results_show": 1000,
+	"included": "",
+	"notincluded": "",
+	"all_check": true,
+	"is_upper": false,
+	"min_price": 1000,
+	"max_price": 100000
+}
