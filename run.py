@@ -3,12 +3,12 @@ import subprocess
 import sys
 from time import perf_counter
 
-# 流水线配置
+# 流水线
 PIPELINE = [
     {
         "name": "数据采集",
         "path": os.path.join("Goofisher", "src", "process", "gfcp.py"),
-        "timeout": 300000  # 修正为合理值（300秒）
+        "timeout": 300000
     },
     {
         "name": "价格筛选",
@@ -46,7 +46,7 @@ def validate_dependencies(depends):
     return missing
 
 def run_step(step, index):
-    """执行单个步骤（带实时输出）"""
+    """执行单个步骤"""
     print(f"\n{'='*40}")
     print(f"步骤 {index+1}/{len(PIPELINE)} | {step['name']}")
     print(f"执行脚本: {step['path']}")
@@ -91,9 +91,6 @@ def run_step(step, index):
             # 检查进程状态
             if process.poll() is not None:
                 break
-                
-            # # 避免CPU占用过高
-            # time.sleep(0.1)
         
         # 获取剩余输出
         remaining_output, _ = process.communicate()

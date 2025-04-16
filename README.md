@@ -49,10 +49,8 @@ pip install -r requirements.txt
 ```
 
 3. 申请DeepSeek API密钥并配置(deepseekApi.py)
-```json
-{
-    "api_key": "your_deepseek_api_key"
-}
+```bash
+API_KEY = "sk-XXXXX"  # API密钥
 ```
 
 4. 配置偏好向量字符串(gfc.json)[其他配置请见https://github.com/MiankeStar/Goofisher]

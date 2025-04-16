@@ -5,7 +5,6 @@ import os
 import time
 import re
 
-# 配置路径
 gfc_path = os.path.join('Goofisher', 'src', 'gfc.json')
 input_path = os.path.join('outputs', 'good.csv')
 output_path = os.path.join('outputs', 'recommendation.csv')
@@ -14,7 +13,7 @@ price_path = os.path.join('outputs', 'price.txt')
 result_path = os.path.join('outputs', 'result.csv')
 log_path = os.path.join('outputs', 'api_debug.log')
 
-# API配置（需替换实际参数）
+# API配置
 API_URL = "https://api.deepseek.com/v1/chat/completions"
 API_KEY = ""  # API密钥
 HEADERS = {
@@ -34,7 +33,7 @@ def parse_api_response(content):
     增强型API响应解析函数
     处理包含Markdown代码块、格式错误等情况
     """
-    # 尝试提取代码块内容
+    # 提取代码块内容
     json_match = re.search(r'```json\n(.*?)\n```', content, re.DOTALL)
     if json_match:
         try:
@@ -42,13 +41,13 @@ def parse_api_response(content):
         except json.JSONDecodeError:
             pass
     
-    # 尝试直接解析整个内容
+    # 尝试直接解析
     try:
         return json.loads(content)
     except json.JSONDecodeError:
         pass
     
-    # 清理内容后尝试解析
+    # 清理后尝试解析
     cleaned_content = content.replace('```', '').strip()
     try:
         return json.loads(cleaned_content)
@@ -80,7 +79,6 @@ with open(gfc_path, 'r', encoding='utf-8') as f:
 Productname = gfc_data["keyword"]
 
 def analyze_text(text):
-    """调用Deepseek API进行分析"""
     try:
         # 验证系统提示词文件
         if not os.path.exists('system_prompt.txt'):
@@ -98,7 +96,7 @@ def analyze_text(text):
             "max_tokens": 500
         }
         
-        # 添加超时和重试机制
+        # 超时重试机制
         max_retries = 3
         for attempt in range(max_retries):
             try:
@@ -154,17 +152,14 @@ with open(input_path, 'r', encoding='utf-8-sig') as f:
     reader = csv.DictReader(f)
     for row in reader:
         log_debug_info(f"开始处理编号 {row['编号']}")
-        
-        # 构建分析文本
+
         input_text = f"""
         【商品描述】{row['介绍']}
         【价格信息】{row.get('价格', '未提供')}
         """
-        
-        # 执行分析
+
         analysis = analyze_text(input_text)
-        
-        # 记录详细结果
+
         log_debug_info(f"编号{row['编号']}分析结果：{json.dumps(analysis, ensure_ascii=False)}")
         
         results.append({

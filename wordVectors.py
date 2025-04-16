@@ -4,14 +4,13 @@ import os
 import re
 import jieba
 
-# 配置路径
 cutwords_path = os.path.join('outputs', 'cutwords.csv')
 gfc_path = os.path.join('Goofisher', 'src', 'gfc.json')
 nameselect_path = os.path.join('outputs', 'nameselect.txt')
 price_path = os.path.join('outputs', 'price.txt')
 output_path = os.path.join('outputs', 'good.csv')
 
-# 自定义否定词组（可根据需要扩展）
+# 自定义拆分屏蔽词组
 negation_phrases = [
     '不包邮', '不想玩', '不想用', '不退款', '不退', '不换',
     '不议价', '不打折', '不超过', '不支持', '不限制', '不能玩',
@@ -19,26 +18,21 @@ negation_phrases = [
     '不含', '补邮费'
 ]
 
-# 动态添加自定义词组
+# 动态添加
 for phrase in negation_phrases:
-    jieba.add_word(phrase, freq=1000)  # 设置高词频确保优先识别
+    jieba.add_word(phrase, freq=1000)  # 高词频优先识别
 
-# 读取并分词关键词
 with open(gfc_path, 'r', encoding='utf-8') as f:
     gfc_data = json.load(f)
-    
-    # 获取需要分词的句子
+
     sentence = gfc_data["wordscut"]
-    
-    # 使用jieba进行分词
+
     words = jieba.lcut(sentence)
     
-    # 过滤标点符号和空白字符
     keywords = set()
     for word in words:
-        # 清洗处理
         cleaned_word = word.strip().lower()
-        # 过滤非有效字符（保留中文、字母、数字）
+        # 过滤非有效字符
         if re.search(r'[\u4e00-\u9fa5a-zA-Z0-9]', cleaned_word):
             keywords.add(cleaned_word)
 
@@ -46,7 +40,7 @@ print(f"关键词分词完成，共{len(keywords)}个关键词。")
 for keyword in keywords:
     print(keyword)
 
-# 构建编号-词组字典（修复BOM问题）
+# 构建编号-词组字典
 word_vectors = {}
 with open(cutwords_path, 'r', encoding='utf-8-sig') as f:  # 修改编码为utf-8-sig
     reader = csv.reader(f)
@@ -67,7 +61,7 @@ for number, words in word_vectors.items():
     score = sum(1 for word in words if word in keywords)
     scores.append((number, score))
 
-# 按得分排序（得分降序，编号升序）
+# 按得分排序
 sorted_items = sorted(scores, key=lambda x: (-x[1], int(x[0])))[:10]
 
 # 读取商品介绍
@@ -86,7 +80,6 @@ with open(price_path, 'r', encoding='utf-8') as f:
         if len(parts) == 2:
             prices[parts[0]] = parts[1]
 
-# 写入结果文件
 with open(output_path, 'w', newline='', encoding='utf-8-sig') as f:
     writer = csv.writer(f)
     writer.writerow(['编号', '介绍', '价格'])
