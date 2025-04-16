@@ -55,9 +55,7 @@ API_KEY = "sk-XXXXX"  # API密钥
 
 4. 配置偏好向量字符串(gfc.json)[其他配置请见https://github.com/MiankeStar/Goofisher]
 ```json
-{
-	"wordscut": "现货包邮正品RTX显卡未拆全新"
-}
+"wordscut": "现货包邮正品RTX显卡未拆全新"
 ```
 
 ## 🎮 使用方法
