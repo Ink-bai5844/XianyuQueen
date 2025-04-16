@@ -1,8 +1,7 @@
 # XianyuQueen - 基于价格筛查、词向量关联及deepseek深度分析的闲鱼商品智能分析推荐系统
 
 ![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
-
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ## 📖 项目简介
 
 本系统是针对闲鱼平台商品交易的智能分析工具，通过多阶段数据处理流水线，实现从商品数据采集到深度语义分析的完整流程。核心功能包括价格分布建模、关键词匹配、文本特征提取和AI推荐分析。
