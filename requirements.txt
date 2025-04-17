@@ -1,4 +1,4 @@
-DrissionPage==3.2.35
+DrissionPage==4.1.0.18
 jieba==0.42.1
 numpy==1.26.4
 requests==2.31.0
